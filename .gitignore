@@ -1,0 +1,7 @@
+.git
+.vs/
+__pycache__/
+temp
+*.pyproj
+*.sln
+*.db
