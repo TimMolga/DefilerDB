@@ -18,6 +18,7 @@ class GUI():
     make_result_window(headers, data)
         Creates the query result GUI window
     """
+    sg.theme('DarkGrey14')
 
     def make_drop_window(self):
         """
