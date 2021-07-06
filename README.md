@@ -32,9 +32,14 @@
 
 Turn your CSV or Excel files into databases. Import CSV / Excel files and query them using SQL. Export your queried data back into CSV and Excel files.
 
+<img width="451" alt="DefilerDBMain" src="https://user-images.githubusercontent.com/49701086/124610981-01d56400-de3f-11eb-87b4-1b63fb8f826f.png">
+<img width="601" alt="DefilerDBQuery" src="https://user-images.githubusercontent.com/49701086/124610988-0437be00-de3f-11eb-86e6-ef41951ad837.png">
+
+
 ### Built With
 
 * [Python](https://www.python.org)
+* [SQLite](https://www.sqlite.org)
 
 
 <!-- GETTING STARTED -->
@@ -64,20 +69,20 @@ Ensure Python 3.7 is installed on your PC.
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+1. Run ```main.py``` to use the program.
+2. Import your data into the program from a CSV or XLSX file.
+3. Query the data via SQL.
+4. View the data.
+5. Export the data, if you wish, to a CSV or XLSX file.
 
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
+*For help on further usage, review the 'Help' dropdown on the main page of the program.*
 
 
 <!-- CONTACT -->
 ## Contact
 
 Project Link: [https://github.com/TimMolga/DefilerDB](https://github.com/TimMolga/DefilerDB)
+
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
