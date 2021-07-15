@@ -77,6 +77,10 @@ Ensure Python 3.7 is installed on your PC.
 
 *For help on further usage, review the 'Help' dropdown on the main page of the program.*
 
+<!-- LICENSE -->
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
 
 <!-- CONTACT -->
 ## Contact
