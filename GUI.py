@@ -180,4 +180,4 @@ class GUI():
                       num_rows=15)],
             [sg.Button('Close', key='-CLOSE-', pad=(0, 20))],
         ]
-        return sg.Window('Query Results', layout, size=(800, 525), grab_anywhere=False, element_justification='center')
+        return sg.Window('Query Results', layout, grab_anywhere=False, element_justification='center')
