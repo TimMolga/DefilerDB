@@ -1,6 +1,7 @@
 import re
 from helper_methods import get_date
 
+
 class ImportTable:
     """
     This class creates a table to help with importing data into the database
@@ -28,7 +29,8 @@ class ImportTable:
         """
         self.table_name = self._get_file_name(file_path)
         self.column_names = self._get_dataframe_column_names(import_table)
-        self.column_names_types = self._get_column_names_types_string(import_table)
+        self.column_names_types = self._get_column_names_types_string(
+            import_table)
         self.import_table = import_table
 
     def _get_column_names_types_string(self, dataframe):
@@ -39,17 +41,15 @@ class ImportTable:
         ----------
         dataframe : pandas.DataFrame
             the dataframe to get column names and data types from  
-        
+
         Returns
         -------
         str
             column names and types in the dataframe
         """
         dictionary_types = self._get_dataframe_column_types(dataframe)
-        list_types = ['id integer']
-        for key in dictionary_types:
-            list_types.append(f'{key} {dictionary_types[key]}')
-        return ','.join(list_types)
+        return ','.join(['Id integer'] + list(
+            {f'{key} {dictionary_types[key]}' for key in dictionary_types}))
 
     def _get_dataframe_column_names(self, dataframe):
         """
@@ -59,15 +59,13 @@ class ImportTable:
         ----------
         dataframe : pandas.DataFrame
             the dataframe to get column names from
-        
+
         Returns
         -------
         str
             column names
         """
-        dataframe_list = list(dataframe.columns)
-        dataframe_list.insert(0, 'id')
-        return ','.join(dataframe_list)
+        return ','.join(['Id'] + list(dataframe.columns))
 
     def _get_dataframe_column_types(self, dataframe):
         """
@@ -77,7 +75,7 @@ class ImportTable:
         ----------
         dataframe : pandas.DataFrame
             the dataframe to get column data types from  
-        
+
         Returns
         -------
         dict
@@ -101,7 +99,7 @@ class ImportTable:
         ----------
         path : str
             the path of the file to get the name from
-        
+
         Returns
         -------
         str

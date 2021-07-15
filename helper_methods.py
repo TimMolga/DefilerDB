@@ -3,7 +3,9 @@ This script file has helper methods to extract or process data to help function 
 '''
 import os
 from datetime import datetime
- 
+import config
+
+
 def create_response_message(message, response_type=False):
     """Create a formatted success or error message.
 
@@ -13,7 +15,7 @@ def create_response_message(message, response_type=False):
         The message to return. 
     response_type : str
         The type of message; Default is False for error messages, True for success messages.
-        
+
     Returns
     -------
     str
@@ -24,29 +26,26 @@ def create_response_message(message, response_type=False):
     else:
         return f'ERROR: {message}'
 
-def drop_database(db_name):
-        """
-        Drops the database
 
-        Parameters
-        ----------
-        table_name : str
-            the database to drop
-            
-        Returns
-        -------
-        str
-            a message if the operation was completed successfully or failed
-        """
-        if os.path.exists(db_name):
-            os.remove(db_name)
-            return create_response_message(f'Dropped {db_name}', True)
-        else:
-            return create_response_message(f'{db_name} does not exist')
+def drop_database():
+    """
+    Drops the database
+
+    Returns
+    -------
+    str
+        a message if the operation was completed successfully or failed
+    """
+    if os.path.exists(config.DB_NAME):
+        os.remove(config.DB_NAME)
+        return create_response_message(f'Dropped {config.DB_NAME}', True)
+    else:
+        return create_response_message(f'{config.DB_NAME} does not exist')
+
 
 def get_date():
     """Gets the current date in YYYYMMDDHMS format.
-        
+
     Returns
     -------
     str

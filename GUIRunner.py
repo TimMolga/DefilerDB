@@ -1,5 +1,6 @@
 import config
 import PySimpleGUI as sg
+from helper_methods import drop_database
 from Importer import Importer
 from Exporter import Exporter
 from DefilerDB import DefilerDB
@@ -25,12 +26,14 @@ class GUIRunner():
         self._window_import = None
         self._window_result = None
         self._window_export = None
-        self._window_drop = None
+        self._window_drop_table = None
+        self._window_drop_database = None
         self._window_help = None
         self._window_import_active = False
         self._window_result_active = False
         self._window_export_active = False
-        self._window_drop_active = False
+        self._window_drop_table_active = False
+        self._window_drop_database_active = False
         self._window_help_active = False
 
     def _create_insert_data(self, path, data):
@@ -58,6 +61,14 @@ class GUIRunner():
                 insert_result = db.execute_insert_query(
                     import_table.table_name, import_table.column_names, import_table.import_table)
                 sg.popup_ok(f'{create_result}\n\n{insert_result}')
+
+    def _drop_database(self):
+        """
+        Drops the database and displays the result
+
+        """
+        drop_result = drop_database()
+        sg.popup_ok(f'{drop_result}')
 
     def _drop_table(self, table_name):
         """
@@ -142,9 +153,12 @@ class GUIRunner():
             elif event == 'Import From File...' and not self._window_import_active:
                 self._window_import = GUI().make_import_window()
                 self._window_import_active = True
-            elif event == 'Drop Table...' and not self._window_drop_active:
-                self._window_drop = GUI().make_drop_window()
-                self._window_drop_active = True
+            elif event == 'Drop Table...' and not self._window_drop_table_active:
+                self._window_drop_table = GUI().make_drop_table_window()
+                self._window_drop_table_active = True
+            elif event == 'Drop Database...' and not self._window_drop_database_active:
+                self._window_drop_database = GUI().make_drop_database_window()
+                self._window_drop_database_active = True
             elif event == 'Importing Data' and not self._window_help_active:
                 self._window_help = GUI().make_help_window(config.IMPORT_INFO)
                 self._window_help_active = True
@@ -196,17 +210,28 @@ class GUIRunner():
                         self._export_data(window_export_values['-FOLDERPATH-'], self._export_table.export_table,
                                           self._export_table.table_name, window_export_values['-FILETYPE-'])
                 self._window_export.close()
-            if self._window_drop_active:
+            if self._window_drop_table_active:
                 while True:
-                    window_drop_event, window_drop_values = self._window_drop.read()
-                    if window_drop_event == sg.WIN_CLOSED or window_drop_event == '-CLOSE-':
-                        self._window_drop_active = False
+                    window_drop_table_event, window_drop_table_values = self._window_drop_table.read()
+                    if window_drop_table_event == sg.WIN_CLOSED or window_drop_table_event == '-CLOSE-':
+                        self._window_drop_table_active = False
                         break
-                    elif window_drop_event == '-DROPTABLE-':
-                        self._drop_table(window_drop_values['-TABLENAME-'])
+                    elif window_drop_table_event == '-DROPTABLE-':
+                        self._drop_table(
+                            window_drop_table_values['-TABLENAME-'])
                         self._window.FindElement(
                             '-AVAILABLETABLES-').update(values=self._get_available_tables())
-                self._window_drop.close()
+                self._window_drop_table.close()
+            if self._window_drop_database_active:
+                while True:
+                    window_drop_database_event, window_drop_database_values = self._window_drop_database.read()
+                    if window_drop_database_event == sg.WIN_CLOSED or window_drop_database_event == '-CLOSE-':
+                        self._window_drop_database_active = False
+                        break
+                    elif window_drop_database_event == '-DROPDATABASE-':
+                        self._drop_database()
+                self._window_drop_database.close()
+                self._window.close()
             if self._window_help_active:
                 while True:
                     window_help_event, window_help_values = self._window_help.read()

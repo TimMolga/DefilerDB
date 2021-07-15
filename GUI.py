@@ -1,8 +1,10 @@
 import PySimpleGUI as sg
+import config
+
 
 class GUI():
     """This class creates GUI window layouts and responsible for the view
-    
+
     Methods
     -------
     make_drop_window()
@@ -20,7 +22,24 @@ class GUI():
     """
     sg.theme('DarkGrey14')
 
-    def make_drop_window(self):
+    def make_drop_database_window(self):
+        """
+        Creates the drop database GUI window
+
+        Returns
+        -------
+        PySimpleGUI.window
+            a drop database window to display
+        """
+        layout = [
+            [sg.Text('Drop the Database (will close the program)')],
+            [sg.Text(f'Database Name: {config.DB_NAME}')],
+            [sg.Button('Drop', key='-DROPDATABASE-'),
+             sg.Button('Close', key='-CLOSE-')]
+        ]
+        return sg.Window('Drop Database', layout)
+
+    def make_drop_table_window(self):
         """
         Creates the drop table GUI window
 
@@ -31,8 +50,10 @@ class GUI():
         """
         layout = [
             [sg.Text('Drop a Table in the Database')],
-            [sg.Text('Table Name:'), sg.Input(enable_events = True, key='-TABLENAME-')],
-            [sg.Button('Drop', key='-DROPTABLE-'), sg.Button('Close', key='-CLOSE-')]
+            [sg.Text('Table Name:'), sg.Input(
+                enable_events=True, key='-TABLENAME-')],
+            [sg.Button('Drop', key='-DROPTABLE-'),
+             sg.Button('Close', key='-CLOSE-')]
         ]
         return sg.Window('Drop Table', layout)
 
@@ -48,9 +69,12 @@ class GUI():
         file_dropdown = ['CSV', 'XLSX']
         layout = [
             [sg.Text('Export Data')],
-            [sg.Text('Folder:'), sg.Input(enable_events = True, key='-FOLDERPATH-', readonly=True), sg.FolderBrowse()],
-            [sg.Text('Type:  '), sg.Combo(file_dropdown, default_value=file_dropdown[0], key='-FILETYPE-', readonly=True, size=(43, 20))],
-            [sg.Button('Export', key='-EXPORTFILEDB-'), sg.Button('Close', key='-CLOSE-')]
+            [sg.Text('Folder:'), sg.Input(enable_events=True,
+                                          key='-FOLDERPATH-', readonly=True), sg.FolderBrowse()],
+            [sg.Text('Type:  '), sg.Combo(file_dropdown, default_value=file_dropdown[0],
+                                          key='-FILETYPE-', readonly=True, size=(43, 20))],
+            [sg.Button('Export', key='-EXPORTFILEDB-'),
+             sg.Button('Close', key='-CLOSE-')]
         ]
         return sg.Window('Export Data', layout)
 
@@ -85,9 +109,12 @@ class GUI():
         """
         layout = [
             [sg.Text('Import Data From File (CSV or XLSX)')],
-            [sg.Text('File:   '), sg.Input(enable_events = True, key='-FILEPATH-', readonly=True), sg.FileBrowse()],
-            [sg.Text('Sheet:'), sg.Input(enable_events = True, key='-SHEETNAME-', size=(45, 20))],
-            [sg.Button('Import', key='-IMPORTFILEDB-'), sg.Button('Close', key='-CLOSE-')]
+            [sg.Text('File:   '), sg.Input(enable_events=True,
+                                           key='-FILEPATH-', readonly=True), sg.FileBrowse()],
+            [sg.Text('Sheet:'), sg.Input(enable_events=True,
+                                         key='-SHEETNAME-', size=(45, 20))],
+            [sg.Button('Import', key='-IMPORTFILEDB-'),
+             sg.Button('Close', key='-CLOSE-')]
         ]
         return sg.Window('Import Data', layout)
 
@@ -101,14 +128,15 @@ class GUI():
             a main window to display
         """
         menu_def = [
-            ['File', 'Exit'],      
-            ['Import', 'Import From File...'],      
-            ['Drop', 'Drop Table...'],
-            ['Help', ['Getting Started...', ['Importing Data', 'Querying Data', 'Exporting Data'], 'About']], 
-        ] 
+            ['File', 'Exit'],
+            ['Import', 'Import From File...'],
+            ['Drop', ['Drop Table...', 'Drop Database...']],
+            ['Help', ['Getting Started...', ['Importing Data',
+                                             'Querying Data', 'Exporting Data'], 'About']],
+        ]
         layout = [
             [sg.Menu(menu_def)],
-            [sg.Text('DefilerDB', pad=(0,20), font=('arial', 20))],
+            [sg.Text('DefilerDB', pad=(0, 20), font=('arial', 20))],
             [sg.Table(key='-AVAILABLETABLES-',
                       values=available_tables,
                       headings=['Available Tables'],
@@ -118,10 +146,11 @@ class GUI():
                       justification='center',
                       hide_vertical_scroll=True,
                       num_rows=5)],
-            [sg.Multiline(default_text='Enter a query...', size=(200, 4), pad=(0,20), no_scrollbar=True, key='-STRINGQUERY-')],
+            [sg.Multiline(default_text='Enter a query...', size=(
+                200, 4), pad=(0, 20), no_scrollbar=True, key='-STRINGQUERY-')],
             [sg.Button('Execute Query', key='-EXECUTEQUERY-')],
         ]
-        return sg.Window('DefilerDB', layout,size=(600, 400), grab_anywhere=False, element_justification='center')
+        return sg.Window('DefilerDB', layout, size=(600, 400), grab_anywhere=False, element_justification='center')
 
     def make_result_window(self, headers, data):
         """
@@ -141,7 +170,7 @@ class GUI():
         """
         layout = [
             [sg.Button('Export', key='-EXPORTFILE-')],
-            [sg.Text('Query Results:', pad=(0,20))],
+            [sg.Text('Query Results:', pad=(0, 20))],
             [sg.Table(values=data,
                       headings=headers,
                       display_row_numbers=False,
@@ -149,10 +178,6 @@ class GUI():
                       justification='center',
                       hide_vertical_scroll=True,
                       num_rows=15)],
-            [sg.Button('Close', key='-CLOSE-', pad=(0,20))],
+            [sg.Button('Close', key='-CLOSE-', pad=(0, 20))],
         ]
-        return sg.Window('Query Results', layout,size=(800, 525), grab_anywhere=False, element_justification='center')
-
-
-
-
+        return sg.Window('Query Results', layout, size=(800, 525), grab_anywhere=False, element_justification='center')

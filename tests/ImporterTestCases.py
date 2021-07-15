@@ -1,5 +1,8 @@
-import unittest, os
+import unittest
+import os
+import sys
 from Importer import Importer
+
 
 class ImporterTestCases(unittest.TestCase):
     @classmethod
@@ -34,7 +37,7 @@ class ImporterTestCases(unittest.TestCase):
             The dataframe to check for values. 
         set_list_values : list or set
             The list or set values to match against the dataframe.
-        
+
         Returns
         -------
         bool
@@ -49,25 +52,30 @@ class ImporterTestCases(unittest.TestCase):
                 continue
         return value_exists
 
-    def test_import_file_data_expected_csv(self):   
+    def test_import_file_data_expected_csv(self):
         df = self.imp.import_file_data(self.path1)
-        self.assertTrue(len(df) > 0, 'Test: Check File Import Success - CSV File')
-        
+        self.assertTrue(
+            len(df) > 0, 'Test: Check File Import Success - CSV File')
+
     def test_import_file_data_expected_xlsx(self):
         df = self.imp.import_file_data(self.path2, self.sheet1)
-        self.assertTrue(len(df) > 0, 'Test: Check File Import Success - XLSX File')
+        self.assertTrue(
+            len(df) > 0, 'Test: Check File Import Success - XLSX File')
 
     def test_import_file_data_expected_columns_match_one(self):
         df = self.imp.import_file_data(self.path1)
-        self.assertTrue(self.check_if_value_exists(df.columns, self.df_columns), 'Test: Check File Import Success - Columns Match in DF1')
+        self.assertTrue(self.check_if_value_exists(df.columns, self.df_columns),
+                        'Test: Check File Import Success - Columns Match in DF1')
 
     def test_import_file_data_expected_columns_match_two(self):
         df = self.imp.import_file_data(self.path2, self.sheet1)
-        self.assertTrue(self.check_if_value_exists(df.columns, self.df_columns), 'Test: Check File Import Success - Columns Match in DF2')
+        self.assertTrue(self.check_if_value_exists(df.columns, self.df_columns),
+                        'Test: Check File Import Success - Columns Match in DF2')
 
     def test_import_file_data_expected_columns_match_three(self):
         df = self.imp.import_file_data(self.path2, self.sheet2)
-        self.assertTrue(self.check_if_value_exists(df.columns, self.df_columns), 'Test: Check File Import Success - Columns Match in DF3')
+        self.assertTrue(self.check_if_value_exists(df.columns, self.df_columns),
+                        'Test: Check File Import Success - Columns Match in DF3')
 
     def test_import_file_data_expected_columns_intersect(self):
         df1 = self.imp.import_file_data(self.path1)
@@ -76,51 +84,64 @@ class ImporterTestCases(unittest.TestCase):
         df2_set = set(df2.columns)
         df3 = self.imp.import_file_data(self.path2, self.sheet2)
         df3_set = set(df3.columns)
-        df_intersect = self.df_columns.intersection(df1_set, df2_set, df3_set) 
-        self.assertTrue(len(df_intersect) == 4, 'Test: Check File Import Success - All Columns Imported From All Files')
+        df_intersect = self.df_columns.intersection(df1_set, df2_set, df3_set)
+        self.assertTrue(len(df_intersect) == 4,
+                        'Test: Check File Import Success - All Columns Imported From All Files')
 
     def test_import_file_data_expected_values_match_one(self):
         df = self.imp.import_file_data(self.path1)
-        self.assertTrue(self.check_if_value_exists(df, self.df_values1), 'Test: Check File Import Success - Values Match in DF1')
-        self.assertTrue(self.check_if_value_exists(df, self.df_values2), 'Test: Check File Import Success - Values Match in DF1')
-               
+        self.assertTrue(self.check_if_value_exists(
+            df, self.df_values1), 'Test: Check File Import Success - Values Match in DF1')
+        self.assertTrue(self.check_if_value_exists(
+            df, self.df_values2), 'Test: Check File Import Success - Values Match in DF1')
+
     def test_import_file_data_expected_values_match_two(self):
         df = self.imp.import_file_data(self.path2, self.sheet1)
-        self.assertTrue(self.check_if_value_exists(df, self.df_values3), 'Test: Check File Import Success - Values Match in DF2')
-        self.assertTrue(self.check_if_value_exists(df, self.df_values4), 'Test: Check File Import Success - Values Match in DF2')
+        self.assertTrue(self.check_if_value_exists(
+            df, self.df_values3), 'Test: Check File Import Success - Values Match in DF2')
+        self.assertTrue(self.check_if_value_exists(
+            df, self.df_values4), 'Test: Check File Import Success - Values Match in DF2')
 
     def test_import_file_data_expected_values_match_three(self):
         df = self.imp.import_file_data(self.path2, self.sheet2)
-        self.assertTrue(self.check_if_value_exists(df, self.df_values5), 'Test: Check File Import Success - Values Match in DF3')
+        self.assertTrue(self.check_if_value_exists(
+            df, self.df_values5), 'Test: Check File Import Success - Values Match in DF3')
 
     def test_import_file_data_unexpected_import_missing_sheet(self):
         df = self.imp.import_file_data(self.path3, self.sheet4)
-        self.assertTrue('ERROR' in df, 'Test: Check File Import Fail - Missing Sheet')   
-      
+        self.assertTrue(
+            'ERROR' in df, 'Test: Check File Import Fail - Missing Sheet')
+
     def test_import_file_data_unexpected_import_wrong_file_type(self):
         df = self.imp.import_file_data(self.path5)
-        self.assertTrue('ERROR' in df, 'Test: Check File Import Fail - Wrong File Type')
- 
+        self.assertTrue(
+            'ERROR' in df, 'Test: Check File Import Fail - Wrong File Type')
+
     def test_import_file_data_unexpected_import_does_not_exist(self):
         df = self.imp.import_file_data(self.path6)
-        self.assertTrue('ERROR' in df, 'Test: Check File Import Fail - File Does Not Exist')
+        self.assertTrue(
+            'ERROR' in df, 'Test: Check File Import Fail - File Does Not Exist')
 
     def test_import_file_data_unexpected_columns_blank(self):
         df = self.imp.import_file_data(self.path3, self.sheet1)
-        self.assertTrue('ERROR' in df, 'Test: Check File Import Fail - Blank Column Name')
+        self.assertTrue(
+            'ERROR' in df, 'Test: Check File Import Fail - Blank Column Name')
 
     def test_import_file_data_unexpected_columns_null(self):
         df = self.imp.import_file_data(self.path3, self.sheet2)
-        self.assertTrue('ERROR' in df, 'Test: Check File Import Fail - NULL Column Name')
+        self.assertTrue(
+            'ERROR' in df, 'Test: Check File Import Fail - NULL Column Name')
 
     def test_import_file_data_unexpected_columns_duplicate(self):
         df = self.imp.import_file_data(self.path3, self.sheet3)
-        self.assertTrue('ERROR' in df, 'Test: Check File Import Fail - Duplicate Column Name')
+        self.assertTrue(
+            'ERROR' in df, 'Test: Check File Import Fail - Duplicate Column Name')
 
     def test_import_file_data_unexpected_values_blank(self):
         df = self.imp.import_file_data(self.path4, self.sheet1)
         df_blank_values = df.isna().any(axis=None)
-        self.assertTrue(df_blank_values, 'Test: Check File Import Success - Blank Values')
+        self.assertTrue(df_blank_values,
+                        'Test: Check File Import Success - Blank Values')
 
 
 if __name__ == '__main__':
