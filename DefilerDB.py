@@ -42,8 +42,6 @@ class DefilerDB():
         str
             a query string to insert data into a table
         """
-        #list_row = list(row)
-        #list_row_formatted = ','.join(repr(val) for val in list_row)
         list_row = ','.join(repr(val) for val in list(row))
         return f'INSERT INTO {table_name} ({column_names}) VALUES ({list_row})'
 

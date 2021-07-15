@@ -43,7 +43,7 @@ class GUIRunner():
         Parameters
         ----------
         path : str
-            the file path to get the file fromt
+            the file path to get the file from
         sheet : str
             the sheet to data from if an XLSX file
         """
@@ -128,7 +128,7 @@ class GUIRunner():
         Parameters
         ----------
         path : str
-            the file path to get the file fromt
+            the file path to get the file from
         sheet : str
             the sheet to data from if an XLSX file
         """
@@ -188,6 +188,7 @@ class GUIRunner():
                             window_import_values['-FILEPATH-'], window_import_values['-SHEETNAME-'])
                         self._window.FindElement(
                             '-AVAILABLETABLES-').update(values=self._get_available_tables())
+                        self._window_import.close()
                 self._window_import.close()
             if self._window_result_active:
                 while True:
@@ -209,6 +210,7 @@ class GUIRunner():
                     elif window_export_event == '-EXPORTFILEDB-':
                         self._export_data(window_export_values['-FOLDERPATH-'], self._export_table.export_table,
                                           self._export_table.table_name, window_export_values['-FILETYPE-'])
+                        self._window_export.close()
                 self._window_export.close()
             if self._window_drop_table_active:
                 while True:
@@ -221,6 +223,7 @@ class GUIRunner():
                             window_drop_table_values['-TABLENAME-'])
                         self._window.FindElement(
                             '-AVAILABLETABLES-').update(values=self._get_available_tables())
+                        self._window_drop_table.close()
                 self._window_drop_table.close()
             if self._window_drop_database_active:
                 while True:
@@ -230,6 +233,7 @@ class GUIRunner():
                         break
                     elif window_drop_database_event == '-DROPDATABASE-':
                         self._drop_database()
+                        self._window_drop_database.close()
                 self._window_drop_database.close()
                 self._window.close()
             if self._window_help_active:
@@ -255,7 +259,7 @@ class GUIRunner():
             a dataframe of data
         """
         db = DefilerDB()
-        query_result = DefilerDB().execute_select_query(query)
+        query_result = db.execute_select_query(query)
         if 'ERROR' in query_result:
             sg.popup_ok(f'{query_result}')
             return
