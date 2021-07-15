@@ -110,7 +110,7 @@ class GUI():
         layout = [
             [sg.Text('Import Data From File (CSV or XLSX)')],
             [sg.Text('File:   '), sg.Input(enable_events=True,
-                                           key='-FILEPATH-', readonly=True), sg.FileBrowse()],
+                                           key='-FILEPATH-'), sg.FileBrowse()],
             [sg.Text('Sheet:'), sg.Input(enable_events=True,
                                          key='-SHEETNAME-', size=(45, 20))],
             [sg.Button('Import', key='-IMPORTFILEDB-'),
@@ -146,7 +146,7 @@ class GUI():
                       justification='center',
                       hide_vertical_scroll=True,
                       num_rows=5)],
-            [sg.Multiline(default_text='Enter a query...', size=(
+            [sg.Multiline(default_text='SELECT * FROM [Table]', size=(
                 200, 4), pad=(0, 20), no_scrollbar=True, key='-STRINGQUERY-')],
             [sg.Button('Execute Query', key='-EXECUTEQUERY-')],
         ]
